@@ -178,6 +178,71 @@ year &         & number & hours & detected \\
 \end{table}
 
 
+
+\section{Data preprocessing\label{sect:preprocessing}}
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{0.5\textwidth}
+\includegraphics[width=19pc]{figs/pied_PMT1.eps}
+\vspace{-1.0pc}
+\caption{The PMT baseline for central PMT.}
+\label{fig:pied}
+\end{minipage}
+\vfill
+\vspace{1pc}
+\begin{minipage}[t]{0.5\textwidth}
+\includegraphics[width=19pc]{figs/piedfluct_PMT1.eps}
+\vspace{-1.0pc}
+\caption{The PMT baseline fluctuations for central PMT.}
+\label{fig:piedfluct}
+\end{minipage}
+\end{figure}
+
+
+%\begin{figure}[bht]
+%\centering
+%\includegraphics[width=0.40\textwidth]{figs/time_correction_quality_noise_low}
+%\caption{The histogram of modeled differences between true and reconstructed synchronization pulse positions.}
+%\label{fig:synchro}
+%\end{figure} 
+
+
+\subsection{Baseline handling}
+
+The \mbox{SPHERE-2} DAQ system had two data channels per one PMT working with half phase shift effectively doubling sampling frequency. Due to some technical reasons (see detailed description of \mbox{SPHERE-2} electronics in \cite{Ant15a}) in the DAQ system the current was added to the PMT output before it got to the FADC. This additional baseline current, individual in each channel, resulted in on average about 40--60 additional `code' units (arbitrary unit on the FADC output, see~\cite{Ant16} for details) and not necessarily integer in those units. The exact value of added current was unknown and changed slowly over time with the change of temperature and conditions within the control block (this was observed on-site during days temperature change). The changes of the baseline current were small and slow enough to consider the baseline constant during each recorded frame (during the flight the current changed on about 1--2 units per 4 hours). 
+
+During data preprocessing the baselines in each channel were estimated as an average value from the first 400 time bins recorded, see for example Fig.~\ref{fig:pied}. The better estimation could be achieved by fitting the distribution of all values recorded in the frame (thus rendering procedure less sensitive to extreme fluctuations or random particle signals) with Gaussian distribution function. However during the later signal reconstruction procedure small baseline uncertainties were automatically accounted for, thus simpler and faster procedure was used. After a baseline in a channel was estimated its value was subtracted from signals in this channel to have a near-zero signal baseline further. figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum} show events signals with 
+subtracted baselines.
+
+Along with average value for each channel the standard deviations of signals in each channel $\sigma_i$ were estimated and found to be from 0.5 to 2.5 arb.~unit, see  Fig.~\ref{fig:piedfluct}. The fluctuation of the baseline in each data channel came from constant starlight background that was present during the measurements. With the clear moonless night sky starlight background is (1--2)$\cdot10^{12}$~photon~sr$^{-1}$~s$^{-1}$~m$^{-2}$~\cite{starlightbackground}. Thus for 12.5~ns about 50--70 photons from starlight background should had been falling on each PMT on average producing about 4--7 photoelectrons, which translates in 3--5 arb. units. The characteristic amplitude of these fluctuations were individual for each channel and came from differences in amplification and quantum efficiency of each PMT. More sensitive PMTs showed higher fluctuations. The estimated fluctuations are consistent with the expected ones. The electronics and PMTs themselves produced very low noise (less than 1 arb. unit) as was checked in dark room in the laboratory and on-site. The average fluctuation values later were used as thresholds during EAS events identification to filter-out noise. 
+
+
+\subsection{Pulse noise}
+\label{sect:noiseremoval}
+
+{\Russian
+
+В русле дальнейшего сравнения моделирования для СФЕРЫ с экспериментальными данными был проверен шум импульсный, наблюдающийся невооружённым глазом в отдельных каналах.
+
+Первое, были вычислены коэффициенты корреляции между отдельными каналами. Брались данные 2013 года, все события от ШАЛ и линии, а также их калибровочные кадры. Данные проверялись на синхронность всех каналов (случаются выбросы). В кадрах с отступом в 10 бин от края кадра брались 300 бин до триггера и 300 бин до синхроимпульса в событиях и в линиях, и только первые 300 бин в калибровочных кадрах. Полученные коэффициенты корреляции приведены на рисунке channel correlation. Видно, что ряд каналов неплохо коррелируют друг на друга, т.е. имеют некий общий вклад поверх независимого шума от светового фона.
+
+На тех же данных были получены ковариации каналов. В предположении, что в каждом канале поверх независимого оптического фона накладывается с какой-то амплитудой общий для всех каналов шум аппаратуры были оценены вклады этого общего аппаратного шума в каждый канал (как величина равная сумме всех коэффициентов ковариации данного канала со всем остальными каналам, нормированная на самую большую такую сумму). Оценка не является точной, но это поправимо. Полученные коэффициенты см в файле channel correlations.txt.
+
+Т.к. предполагалось, что "коррелированный" шум носит импульсный нерегулярный характер, то в каждом событии была выделена скоррелированная шумовая составляющая как сумма всех каналов с учётом полученных чуть выше коэффициентов. Т.к. в каждом временном бине суммировались данные с весами, равными ожидаемому вкладу шума в этот канал. Случайный шум от оптического фона должен давать 0, как сумма 109 независимых случайных величин с мат.ожиданием 0. А вот общий для всех шум, одинаковый во всех каналах, должен сложиться и стать заметным.
+Эта процедура была проделана со всеми теми же данными (см. Noise.jpg). Если развернуть поближе (Noise  closeup.jpg), то видно, что шум действительно импульсный и имеет некую повторяющую структуру из выброса вверх (светлая полоса), за ним выброса вниз (тёмная полоса), затем небольшое плато, выброс вниз, затем выброс вверх. чтобы выяснить, так ли это и является ли это общей закономерностью всегда, развёртки отдельных событий были выровнены по шумовым импульсам (Nsync.jpg). Шум в итоге регулярный, имеет постоянную амплитуду во всех событиях (т.е. это наводка на аппаратуре, не на ФЭУ, т.к. тут не применены коэффициенты калибровки).
+Сумму всех событий с учётом синхронизации шумовых импульсов см. на noise full length (или выделенный повторяющийся сегмент на noise segment). Шаг повторений 252 бина, что соответствует частоте 317460-317800 Гц (но это уже не ко мне, что там так шумит). В остатке имеем, что во всех кадрах присутствует вот такая наводка on the Fig.~\ref{fig:pulse_noise_segment}  c шагом повторений 252 бина по времени.
+
+}
+
+%% noise segment
+\begin{figure}[tb]
+\includegraphics[width=0.48\textwidth]{figs/pulse_noise_segment.pdf}
+\caption{Pulse noise segment}
+\label{fig:pulse_noise_segment}
+\end{figure}
+
+
 \subsection{Calibration}
 % Проверка, правка (Подгрудков)
 The PMT sensitivity in general depends on the temperature, background illumination, power supply voltage and etc. The online calibration system was used to correctly account for PMT gain factors.
@@ -192,6 +257,9 @@ The procedure described in~\cite{Ant16} since had some updates. First one was a 
 Additionally, the small voltage variations on the Hamamtsu R3886 PMT around the initially set value was taken into account lowering the overall uncertainty. This was done by switching from the use of the initial `set' voltage (available in DAC codes) to the values of constantly measured voltage on the PMT (provided with independent ADC).
 
 The all the absolute calibration data and procedure was rechecked. Small was correction added to account for Hamamatsu R3886 PMT non-linearity at the stage of its gain-voltage dependence study.
+
+
+
 
 \section{Data handling}
 % про расшифровку (Бонвеч)
@@ -258,7 +326,8 @@ All the data frames are pre-processed, including baselines estimation and substr
 %%%%%%%%%%% Table {tab:rejection} 
 \begin{table*}[bth]
     \centering
-    \caption{The annual statistics of event selection}
+    \caption{The annual statistics of event selection }
+    \todoi{Fill the event rejection table}
     \label{tab:rejection}
     \vspace{1pc}
     \begin{tabular}{|l||r|r||r|r||r|r|}
@@ -324,31 +393,6 @@ The altitude distribution of detected events classified as EAS is shown on the F
 
 
 
-\subsection{Pulse noise}
-\label{sect:noiseremoval}
-
-{\Russian
-
-В русле дальнейшего сравнения моделирования для СФЕРЫ с экспериментальными данными был проверен шум импульсный, наблюдающийся невооружённым глазом в отдельных каналах.
-
-Первое, были вычислены коэффициенты корреляции между отдельными каналами. Брались данные 2013 года, все события от ШАЛ и линии, а также их калибровочные кадры. Данные проверялись на синхронность всех каналов (случаются выбросы). В кадрах с отступом в 10 бин от края кадра брались 300 бин до триггера и 300 бин до синхроимпульса в событиях и в линиях, и только первые 300 бин в калибровочных кадрах. Полученные коэффициенты корреляции приведены на рисунке channel correlation. Видно, что ряд каналов неплохо коррелируют друг на друга, т.е. имеют некий общий вклад поверх независимого шума от светового фона.
-
-На тех же данных были получены ковариации каналов. В предположении, что в каждом канале поверх независимого оптического фона накладывается с какой-то амплитудой общий для всех каналов шум аппаратуры были оценены вклады этого общего аппаратного шума в каждый канал (как величина равная сумме всех коэффициентов ковариации данного канала со всем остальными каналам, нормированная на самую большую такую сумму). Оценка не является точной, но это поправимо. Полученные коэффициенты см в файле channel correlations.txt.
-
-Т.к. предполагалось, что "коррелированный" шум носит импульсный нерегулярный характер, то в каждом событии была выделена скоррелированная шумовая составляющая как сумма всех каналов с учётом полученных чуть выше коэффициентов. Т.к. в каждом временном бине суммировались данные с весами, равными ожидаемому вкладу шума в этот канал. Случайный шум от оптического фона должен давать 0, как сумма 109 независимых случайных величин с мат.ожиданием 0. А вот общий для всех шум, одинаковый во всех каналах, должен сложиться и стать заметным.
-Эта процедура была проделана со всеми теми же данными (см. Noise.jpg). Если развернуть поближе (Noise  closeup.jpg), то видно, что шум действительно импульсный и имеет некую повторяющую структуру из выброса вверх (светлая полоса), за ним выброса вниз (тёмная полоса), затем небольшое плато, выброс вниз, затем выброс вверх. чтобы выяснить, так ли это и является ли это общей закономерностью всегда, развёртки отдельных событий были выровнены по шумовым импульсам (Nsync.jpg). Шум в итоге регулярный, имеет постоянную амплитуду во всех событиях (т.е. это наводка на аппаратуре, не на ФЭУ, т.к. тут не применены коэффициенты калибровки).
-Сумму всех событий с учётом синхронизации шумовых импульсов см. на noise full length (или выделенный повторяющийся сегмент на noise segment). Шаг повторений 252 бина, что соответствует частоте 317460-317800 Гц (но это уже не ко мне, что там так шумит). В остатке имеем, что во всех кадрах присутствует вот такая наводка on the Fig.~\ref{fig:pulse_noise_segment}  c шагом повторений 252 бина по времени.
-
-}
-
-%% noise segment
-\begin{figure}[tb]
-\includegraphics[width=0.48\textwidth]{figs/pulse_noise_segment.pdf}
-\caption{Pulse noise segment}
-\label{fig:pulse_noise_segment}
-\end{figure}
-
-
 \section{Conclusions \label{sect:conclusions}}
 
 {
@@ -375,47 +419,9 @@ In the paper we demonstrated how the monitoring of the SPHERE-2 parameters works
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%   Appendix %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\appendix
+%%\appendix
 
 
-
-\section{Data preprocessing\label{sect:preprocessing}}
-
-\begin{figure}[t]
-\centering
-\begin{minipage}[t]{0.5\textwidth}
-\includegraphics[width=19pc]{figs/pied_PMT1.eps}
-\vspace{-1.0pc}
-\caption{The PMT baseline for central PMT.}
-\label{fig:pied}
-\end{minipage}
-\vfill
-\vspace{1pc}
-\begin{minipage}[t]{0.5\textwidth}
-\includegraphics[width=19pc]{figs/piedfluct_PMT1.eps}
-\vspace{-1.0pc}
-\caption{The PMT baseline fluctuations for central PMT.}
-\label{fig:piedfluct}
-\end{minipage}
-\end{figure}
-
-
-%\begin{figure}[bht]
-%\centering
-%\includegraphics[width=0.40\textwidth]{figs/time_correction_quality_noise_low}
-%\caption{The histogram of modeled differences between true and reconstructed synchronization pulse positions.}
-%\label{fig:synchro}
-%\end{figure} 
-
-
-\subsection{Baseline handling}
-
-The \mbox{SPHERE-2} DAQ system had two data channels per one PMT working with half phase shift effectively doubling sampling frequency. Due to some technical reasons (see detailed description of \mbox{SPHERE-2} electronics in \cite{Ant15a}) in the DAQ system the current was added to the PMT output before it got to the FADC. This additional baseline current, individual in each channel, resulted in on average about 40--60 additional `code' units (arbitrary unit on the FADC output, see~\cite{Ant16} for details) and not necessarily integer in those units. The exact value of added current was unknown and changed slowly over time with the change of temperature and conditions within the control block (this was observed on-site during days temperature change). The changes of the baseline current were small and slow enough to consider the baseline constant during each recorded frame (during the flight the current changed on about 1--2 units per 4 hours). 
-
-During data preprocessing the baselines in each channel were estimated as an average value from the first 400 time bins recorded, see for example Fig.~\ref{fig:pied}. The better estimation could be achieved by fitting the distribution of all values recorded in the frame (thus rendering procedure less sensitive to extreme fluctuations or random particle signals) with Gaussian distribution function. However during the later signal reconstruction procedure small baseline uncertainties were automatically accounted for, thus simpler and faster procedure was used. After a baseline in a channel was estimated its value was subtracted from signals in this channel to have a near-zero signal baseline further. figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum} show events signals with 
-subtracted baselines.
-
-Along with average value for each channel the standard deviations of signals in each channel $\sigma_i$ were estimated and found to be from 0.5 to 2.5 arb.~unit, see  Fig.~\ref{fig:piedfluct}. The fluctuation of the baseline in each data channel came from constant starlight background that was present during the measurements. With the clear moonless night sky starlight background is (1--2)$\cdot10^{12}$~photon~sr$^{-1}$~s$^{-1}$~m$^{-2}$~\cite{starlightbackground}. Thus for 12.5~ns about 50--70 photons from starlight background should had been falling on each PMT on average producing about 4--7 photoelectrons, which translates in 3--5 arb. units. The characteristic amplitude of these fluctuations were individual for each channel and came from differences in amplification and quantum efficiency of each PMT. More sensitive PMTs showed higher fluctuations. The estimated fluctuations are consistent with the expected ones. The electronics and PMTs themselves produced very low noise (less than 1 arb. unit) as was checked in dark room in the laboratory and on-site. The average fluctuation values later were used as thresholds during EAS events identification to filter-out noise. 
 
 %\subsection{Channel synchronization}
 
@@ -455,21 +461,12 @@ Along with average value for each channel the standard deviations of signals in 
 %    \end{minipage}
 %\end{figure*}
 
-% в приложения и на всю страницу, дописать параметры события
-\begin{figure*}[pt]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figs/mosaic_11588_lin.eps}%
-    \caption{The signals of the PMT mosaic with time step 12.5~ns for the EAS classified event with number 11588 the same as on Fig.~\ref{fig:frames}a, Fig.~\ref{fig:pulses}a, Fig.~\ref{fig:mosaic_sum}a. Zenith angle of the EAS initial particle is estimated as $\theta = 23^{\circ}$. Altitude of the detector $H$ = 702~m above snow level.
-    }
-    \label{fig:mosaic_eas}
-\end{figure*}
-
 \begin{figure*}[pt]
     \centering
     \includegraphics[width=0.9\textwidth]{figs/mosaic_11588_log1.pdf}%
     \caption{The signals of the PMT mosaic with time step 12.5~ns for the EAS classified event with number 11588 the same as on Fig.~\ref{fig:frames}a, Fig.~\ref{fig:pulses}a, Fig.~\ref{fig:mosaic_sum}a. Zenith angle of the EAS initial particle is estimated as $\theta = 23^{\circ}$. Altitude of the detector $H$ = 702~m above snow level.
     }
-    \label{fig:mosaic_eas2}
+    \label{fig:mosaic_eas}
 \end{figure*}
 
 \end{document}

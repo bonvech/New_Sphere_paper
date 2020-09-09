@@ -1,14 +1,475 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+%\documentclass[review]{elsarticle}
+%\documentclass[preprint]{elsarticle}
+%\documentclass[1p]{elsarticle}
+%\documentclass[3p]{elsarticle}
+%\documentclass[5p]{elsarticle}
+\documentclass[final,5p,times,twocolumn]{elsarticle}
+%\documentclass[final,5p,twocolumn]{elsarticle}
 
-\title{New Sphere paper}
-\author{Elena Bonvech}
-\date{June 2020}
+\usepackage[utf8]{inputenc} % Включаем поддержку UTF8
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}   % убрать русский перед отправкой статьи
+
+\usepackage{lineno}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[pdftex, backref, colorlinks]{hyperref}
+\usepackage{multirow}
+
+\modulolinenumbers[5]
+%\journal{Journal of \LaTeX\ Templates}
+%\journal{Journal}
+\journal{Astroparticle Physics}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%
+%% `Elsevier LaTeX' style
+\bibliographystyle{elsarticle-num}
+%%%%%%%%%%%%%%%%%%%%%%%
+%\hyphenpenalty=10000
+
+%\setlength{\marginparwidth}{2cm}
+%\usepackage{todonotes}
+%http://ctan.math.washington.edu/tex-archive/macros/latex/contrib/easy-todo/easy-todo.pdf
+\usepackage[enable]{easy-todo}
+
 
 \begin{document}
 
-\maketitle
+\tableofcontents  % пусть пока побудет, стереть перед подачей
+\listoftodos
+\linenumbers
+
+\begin{frontmatter}
+\title{Data acquisition and events selection in the SPHERE-2 experiment}
+
+\author[address1]{E.A.~Bonvech\corref{correspondingauthor1}}
+\cortext[correspondingauthor1]{Corresponding author}
+\ead{bonvech@yandex.ru}
+\author[address1]{D.V.~Chernov}
+\author[address1]{T.A.~Dzhatdoev}
+\author[address2]{V.I.~Galkin}
+\author[address2,address1]{D.A.~Podgrudkov}
+\author[address1]{T.M.~Roganova}
+\author[address2]{I.A.~Vaiman}
+\address[address1]{Federal State Budget Educational Institution of Higher Education, M.V. Lomonosov Moscow State University, Skobeltsyn Institute of Nuclear Physics (SINP MSU), 1(2), Leninskie gory, GSP-1, 119991 Moscow, Russia}
+\address[address2]{Federal State Budget Educational Institution of Higher Education, M.V. Lomonosov Moscow State University, Department of Physics, 1(2), Leninskie gory, GSP-1, 119991 Moscow, Russia}
+
+\begin{abstract}
+The SPHERE-2 detector designed for the extensive air showers registration performed measurements in 2008--2013. The data the detector collected is still under analysis but here we present the analysis of the telemetry data and of the detector operation conditions including background lighting, temperature conditions and its effects, atmosphere studies.
+\end{abstract}
+
+\begin{keyword}
+primary cosmic rays\sep extensive air showers\sep Vavilov--Cherenkov radiation\sep balloon
+\MSC[2010] 00-01\sep  99-00
+\end{keyword}
+\end{frontmatter}
+
 
 \section{Introduction}
+The SPHERE-2 detector was designed for the primary cosmic ray (PCR) studies in the 10--1000~PeV energy range. The PCR particles induce the secondary particle cascades (extensive air showers, EAS) and secondary radiations (such as Cherenkov light, fluorescent light, radio emission) in the atmosphere that are registered by different methods by the ground-based detectors. However the SPHERE-2 experiment is a first successful implementation of a new EAS registration method --- registration of the reflected Cherenkov light using an aerial-based detector. 
+
+This method, first proposed by E.~Chudakov~\cite{chu74}, allows, on one hand, to register EAS on the relatively large area and later reconstruct the Cherenkov photons lateral distribution function, and on the other hand, to utilize a small size compact detector with all the advantages of such setup. The mentioned advantages include (but are not limited to) the opportunity to implement: a complex topological trigger conditions prior to writing data to storage thus increasing the maximum operational count rate; direct on-line calibration system; high mobility with lower operational costs etc.
+
+Common EAS ground-based arrays such as the Telescope Array~\cite{abu12}, Yakutsk EAS array~\cite{} or the Tunka-133~\cite{} detector are the ground-based structures that are spread over up to hundreds~\cite{abu12} square kilometers. Significant effort is needed in order to install sensitive elements of such vast arrays and to keep them network connected, power-supplied and time-synchronized. More effort is needed for the regular calibration of detector stations and atmosphere parameter control over vast area. 
+
+On the other hand common imaging air Cherenkov telescopes (IACT, like HESS~\cite{} or MAGIC~\cite{}) are relatively compact systems that have good calibration means, high integrity power supply, atmosphere transparency control and so on.
+
+Since the Cherenkov light from EAS has a very sharp directional pattern it can not be observed by detectors more than about 0.5--1~km far from the shower axis. Therefore the IACTs have relatively low upper energy threshold.
+
+The compact detector that observes large surface area, however, can combine some strong sides of an IACT with high upper energy threshold. 
+
+The general overview of the SPHERE-2 experiment can be found in~\cite{Ant15a}, and the detailed description of the detector electronics is given in~\cite{Ant20}.
+
+
+\section{The SPHERE-2 detector \label{sect:detector}}
+%% общее описание детектора и набора всех датчиков телеметрии (Чернов)
+%% что есть, что отслеживаем (барометры, термометры, напряжёметры и пр), с какой точностью, таблица параметров.
+The SPHERE is a cosmic ray experiment based on the registration of Vavilov-Cherenkov radiation generated by extensive air showers (EAS) in the atmosphere and reflected from the snow covered ground surface. The experiment was aimed at accurate registration and reconstruction of every event allowing the event-by-event approach to the EAS primary particle identification and primary spectra study. The present paper is dedicated to the SPHERE experiment stage performed with the compact detector SPHERE-2 in Baikal Lake region during \textcolor{red}{2010--2013} winter seasons. The previous stages of the SPHERE experiment are described in~\cite{Ant15a}. %%это повтор введения
+
+The \mbox{SPHERE-2} detector is a compact optical device to measure the EAS Cherenkov light from the balloon elevated to altitudes up to 1~km above the Earth snow covered surface. Special tethered balloon BAPA developed and created by Russian Augur agency for this experiment was used.
+
+The \mbox{SPHERE-2} detector optics consists of a 1.5~m diameter spherical mirror with a 109 photomultiplier tube (PMT) mosaic. 
+
+%%%% === mosaic picture ===
+\begin{figure}[tb]
+\centering
+    \includegraphics[width=19pc]{figs/mosaic.pdf}%
+    \vspace{-1.0pc}
+    \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated.}
+\label{fig:mosaic}
+\end{figure}
+
+The PMT mosaic is located near the mirror focal surface and records the Cherenkov light reflected from the snow surface below the detector. PMTs are arranged in the hexagonal structure on the spherical surface as shown on Fig.~\ref{fig:mosaic}. 
+
+
+\section{Signal data flow handling}
+%описываем весь рабочий процесс сбора, передачи, хранения и расшифровки непосредственно данных ШАЛ, т.е. данных с мозаики и служебной информации
+\subsection{Electronics}
+% логика работы элементов детектора (возможно переименовать раздел)
+The electronics part includes a data acquisition system (DAQ), trigger system, calibration system etc. The DAQ contains a 10-bit flash analog-to-digital converters (FADC) with 40~MHz sampling frequency and provided 12.5~ns discretization using two \mbox{FADCs} per one optical channel. DAQ worked in a continuous mode forking the signal from each PMT to trigger system and to a 6~$\mu$s delay line. The details on the \mbox{SPHERE-2} apparatus construction and DAQ system operation see in~\cite{Ant15a}. 
+
+%% FADC summation figure
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figs/int_discr.eps}
+    \caption{Functional diagram of the summation of the FADC pulses for channel's discriminator.}
+\label{fig:int_discr}
+\end{figure}
+
+{\Russian
+На рисунке~\ref{fig:int_discr} показана схема интегрирующего дискриминатора измерительного канала для формирования запроса триггера. Данная схема реализована внутри микросхем FPGA (расшифровать!) на всех измерительных каналах. В составе каждого канала имеются по два FADC включенных в режиме чередования. Для обеспечения стабильности работы интегрирующего дискриминатора используется только один из этих двух FADC. Данные с этого FADC поступают на регистр RG1. Данные записываются в регистр по переднему фронту сигнала Clock FADC. Аналогичным образом сигнал Clock фиксирует входные (слева) данные на выходах (справа) всех регистров RG0-RG4. Так как регистры RG1--RG4 включены последовательно, то на входах сумматора (обозначены на схеме тремя трапециями) всегда представлены данные о четырех последних измерениях FADC. Длительность измерительно такта Clock составляет 25нс, что достаточно для получения результата суммирования на входе RG0. Таким образом требуется 5 тактов Clock (соответствует 125нс) для формирования истинного результата на выходе RG0. После суммирования четырех 10-ти разрядных слов результат представляется в виде одного 12-ти разрядного слова. Результат сравнивается с программно заданным значением порога дискриминации с помощью цифрового компаратора. В случае превышения порога компаратор выдаёт сигнал на плату триггера на запрос триггера. Если сигналы запроса триггера от каналов выполняют условия срабатывания триггера, то выполняется процедура сохранения данных в буфер.    
+}
+
+
+\subsection{Trigger system}
+% описание работы фрегата с триггером, блоки, флаги, настройки, дискриминаторы, сумматоры (Бонвеч, Чернов)
+% блок-схема дискриминаторов
+% блок-схема выставления порогов
+% блок-схема триггера
+The trigger system (TS) of the SPHERE-2 detector produces an `event' signal when the trigger condition is satisfied. The trigger condition was: 1~${\mu}$s time window --- so called `local' trigger $LN$ or in any $M$ PMTs --- `global' trigger $GM$. The number of channels to exceed the threshold level was varied from flight to flight to decrease the energy threshold, but the most of the data was obtained under trigger conditions `$L3$ or $G5$' then at least one of two trigger conditions have to be satisfied. The posterior analysis shows that some events was recorded under trigger $L2$ although the condition $L3$ was set.
+
+
+%% блок-схема работа считывания данных (Бонвеч)
+%% get_event_algorithm
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.43\textwidth]{figs/get_event_algorithm.pdf}\hspace{2pc}%
+    \caption{The scheme of the procedure to read event data from the buffer.}
+\label{fig:get_event_algorithm}
+\end{figure}
+% На схеме видна возможная причина большого количества плохих кадров. Если в буфере есть несколько событий и при чтении первого события произошла ошибка чтения FIFO, то следующие события все равно читаются и сохраняются, хотя было бы лучше их выбрасывать, сразу очищая буфер.
+
+\subsection{Data acquisition} 
+
+% определение frame - 112х2х510
+When the TS produced a start signal the DAQ started recording 12.8~$\mu$s of signal from the delay line including capturing $\sim 6~\mu$s of the signal prior to the trigger signal and formed an `event' frame in the ???? buffer. One detector `event' frame contains a 12.8~$\mu$s record of the PMT DAQ signal data from measuring channels with 12.5~ns discretization, in total 1020 10-bit signal values per every of 109~PMT channels. If the signal value exceeded the 10-bit number the 11$^{th}$ bit of the recorded signal value number was set to 1 to indicate the overflowing of the FADC counter and to 0 otherwise. A highest 12$^{th}$ bit of signal value number is set to 1 if the PMT signal exceeds the trigger level. 
+
+The scheme of the reading data from the buffer procedure is shown on the figure~\ref{fig:get_event_algorithm}. 
+The telemetry data written to binary file is: event number, local computer time, two detector inclination angles, GPS coordinates, altitude, UTC time, trigger time, magnetometer angle, average anode currents for all 109~PMT. 
+
+One `event' frame information takes 220~kBytes. All the data is saved to a binary file on the detector on-board computer SSD drive. From primary binary files the work frames files were created during data preprocessing. Preprocessing included baselines estimation and substraction, time drift detection and correction, for detail see~\ref{sect:preprocessing}.
+
+
+\begin{table}[b]
+\centering
+\caption{The annual statistics of the SPHERE experiment on Baikal Lake}
+\label{tab:statistics}
+\vspace{1pc}
+\begin{tabular}{|c||c|r|c|r|r|}
+\hline
+run  & flights & PMT    & time, & triggers \\ 
+year &         & number & hours & detected \\ 
+\hline \hline
+\multicolumn{5}{|c|}{test runs} \\
+\hline
+2008 & 1 &  20 &  1 &     1 \\ 
+2009 & 5 &  96 &  1 &     1 \\ 
+2010 & 6 &  96 & 30 &  1343 \\
+\hline
+\multicolumn{5}{|c|}{experiment runs} \\
+\hline
+2011 & 4 &  96 & 30 & 20571 \\
+2012 & 5 & 109 & 31 &  7716 \\
+2013 & 5 & 109 & 33 &  3813 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Calibration}
+% Проверка, правка (Подгрудков)
+The PMT sensitivity in general depends on the temperature, background illumination, power supply voltage and etc. The online calibration system was used to correctly account for PMT gain factors.
+
+Each trigger `event' frame is paired by a follow-up `calibration event' that was saved in the same format as the main `event' data. The `calibration event' is caused by the illumination of the PMT mosaic by the LEDs from the mirror surface level via optical fibers. The individual LED flashes duration was set according to the calibration algorithm. Each LED produced two flashes with known light distribution over the PMT mosaic. 
+
+The `calibration' frame was used to estimate PMTs relative sensitivity and check PMTs for possible non-linearity. The procedure for obtaining calibration and linearity corrections data was described in detail in the dedicated paper~\cite{Ant16}. 
+
+%\subsection update to the procedure
+The procedure described in~\cite{Ant16} since had some updates. First one was a described below in section~\ref{sect:noiseremoval} procedure of identification and specific noise removal from every frame. This made the data more reliable and finer details became accessible. More precise data allowed a better estimation of the calibration LEDs optical fibers orientation. This in turn allowed to account for the PMTs entry window reflectivity. The PMT entry window surface being a flat air-glass border reflects some light depending on the the light incidence angle. The reflected light is then re-reflected back by the mirror to the mosaic. The amount of additional light in some PMTs was comparable to or exceeded the direct light.
+
+Additionally, the small voltage variations on the Hamamtsu R3886 PMT around the initially set value was taken into account lowering the overall uncertainty. This was done by switching from the use of the initial `set' voltage (available in DAC codes) to the values of constantly measured voltage on the PMT (provided with independent ADC).
+
+The all the absolute calibration data and procedure was rechecked. Small was correction added to account for Hamamatsu R3886 PMT non-linearity at the stage of its gain-voltage dependence study.
+
+\section{Data handling}
+% про расшифровку (Бонвеч)
+% оценка пьедестала и его флуктуаций (и связь с токами) (Подгрудков, Вайман)
+
+%\section{Event selection\label{sect:classification}}
+
+\subsection{Trigger data}
+
+The SPHERE-2 detector registered more than 30 thousands trigger event frames but not all of them was caused by signals of the EAS Cherenkov light. 
+Examples of `event' frames detected by the SPHERE-2 detector are presented on the figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum}. They are of different types of  dataframes. 
+
+The Fig.~\ref{fig:frames} present events as a full map of signal intensities in all PMT channels during the frame time. The x-axis on the Fig.~\ref{fig:frames} is the detector PMT number $N$ according to Fig.~\ref{fig:mosaic} and the y-axis is the 12.5~ns time bin number $T$. The color intensity of every point on the Fig.~\ref{fig:frames} is proportional to the logarithm of the signal of the  photomultiplier $N$ in the time bin $T$. Few measuring channels sometimes failed or worked incorrectly. The data of such channels were not processed and are visible in the figures as zeros.
+
+Fig.~\ref{fig:pulses} shows signal pulses in channels with the largest signal magnitudes in the event frame. And the Fig.~\ref{fig:mosaic_sum} demonstrates an integral signal for every optic channel. The integration was made as a sum of signals in time limits indicated on the Fig.~\ref{fig:pulses} for every frame respectively. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Data frames
+
+%%%%   2012-3559!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{figure*}[btp]
+    \centering
+    %\includegraphics[width=\textwidth]{figs/frames.eps}%
+    %ebb -v figs/frames_col.pdf -- to know boundaries bb
+    \includegraphics[width=0.85\textwidth]{figs/frames_bw_after_new.pdf}
+    \caption{Frames recorded by the SPHERE-2 detector. The baselines are subtracted, time drift is not corrected, calibration coefficients are not applied. a --- is an `event' frame, b --- calibration frame, c --- direct CL, d --- longtime events}
+    \label{fig:frames}
+
+%%% Data frame Pulses and Sums
+    \includegraphics[width=0.85\textwidth]{figs/pulses.pdf}%
+    %\includegraphics[width=0.5\textwidth]{figs/event_channels.eps}%
+    \caption{Pulses in channels with maximal signal in the same frames as on Fig.~\ref{fig:frames}. The baselines are subtracted, time drift is corrected, calibration coefficients are applied.}
+    \label{fig:pulses}
+\vspace{1.0pc}
+    \includegraphics[width=0.85\textwidth]{figs/mosaic_sums_lin.pdf}%
+    \vspace{-1.0pc}
+    \caption{The sum signal for the events on Fig.~\ref{fig:frames} integrated in time limits indicated on the Fig.~\ref{fig:pulses} x-axis. PMTs are arranged according to the scheme on the Fig.~\ref{fig:mosaic}. Color intensity of points is proportional to the logarithm of the PMT signal sum.}
+\label{fig:mosaic_sum}
+\end{figure*}
+
+
+\subsection{Trigger event zoo}
+
+The `event' frame 11588 on the Fig.~\ref{fig:frames}a, \ref{fig:pulses}a and \ref{fig:mosaic_sum}a is an EAS-caused event, it is an image of reflected from the snow surface EAS Cherenkov light. The event structure is typical for Cherenkov light frames as it was described in our paper dedicated to simulation of the SPHERE-2 detector experiment~\cite{Ant19}. The event was detected from altitude 702~m above show surface. The inclination of the detector was $1.5^{\circ}$
+
+On the Fig.~\ref{fig:mosaic_eas} this event is represented step by step as a sequience of images with 12.5~ns interval. It is clearly seen how the signal of reflected from the snow Cherenkov light goes through the PMT mosaic.
+
+The frame 11589 on the Fig.~\ref{fig:frames}b, \ref{fig:pulses}b and \ref{fig:mosaic_sum}b is the `calibration' event following the event 11588. It has the special time signal structure and big magnitudes in all channels caused by LEDs flushes. Calibration frames are separated to calculate the every measuring channel calibration coefficients as desctibed in~\cite{Ant16}.
+
+Event 11308 on Fig.~\ref{fig:frames}c, \ref{fig:pulses}c and \ref{fig:mosaic_sum}c is an event caused by simultaneous short pulses in the several photomultipliers. Duration of pulses does not exceed 6~time bins or 75~ns. The data frame has a large pulse signal in one PMT almost ten times brighter than the others. This type of events can be caused by a charged particle passed through the glass or dinode system of photomultipliers or by a local PMT discharge flash.  
+
+Events like 11452 on Fig.~\ref{fig:frames}d, \ref{fig:pulses}d and \ref{fig:mosaic_sum}d are highly likely random noise events. They has no time structure and was caused by random fluctuations in the environment light or by a very-very weak EAS event. 
+
+A mysterious event type like 12114 is presented on Fig.~\ref{fig:frames}e, \ref{fig:pulses}e and \ref{fig:mosaic_sum}e. The event frame has long pulses in numerous channels. The duration of pulses is more than 6 ${\mu}s$ and exceed the frame time capacity.  This `event' may be triggered by crosstalks of PMTs. Or by some long-time events on the surface or in the atmosphere above the detector. The authors favorite version is that these events are caused by light flashes from the electrical discharges accompanying the Baikal lake ice cracking.
+
+
+\subsection{Rejection}
+
+All the data frames are pre-processed, including baselines estimation and substraction, time drift detection and correction as described in~\ref{sect:preprocessing} and the PMT calibration~\cite{Ant16}. Then the  selection of the data frames caused by reflected EAS Cherenkov light from all the data amount is performed. Firstly the evident non-EAS events are rejected. In the second stage the special pattern analysis procedure is used to find in event frames Cherenkov light signals. The Table~\ref{tab:rejection} shows event number after every step of the rejection. 
+
+
+%%%%%%%%%%% Table {tab:rejection} 
+\begin{table*}[bth]
+    \centering
+    \caption{The annual statistics of event selection}
+    \label{tab:rejection}
+    \vspace{1pc}
+    \begin{tabular}{|l||r|r||r|r||r|r|}
+    \hline
+    Year & \multicolumn{2}{|c||}{2011} & \multicolumn{2}{|c||}{2012} & \multicolumn{2}{|c|}{2013} \\
+    \hline
+    Total triggers & \multicolumn{2}{|c||}{20571} & \multicolumn{2}{|c||}{7716} & \multicolumn{2}{|c|}{3813}\\
+    \hline
+    \hline
+    Criteria & Reject & Result & Reject & Result & Reject & Result\\ 
+    %         & by the criteria & after criteria\\ 
+    \hline 
+    Calibration   &&&& & 1901 & 1912\\
+    Trig $>$ 220  &&&& &  125 & 1787\\
+    Trig $<$ 300  &&&& &    5 & 1782\\
+    Dt   $<$ 200  &&&& &    7 & 1775\\
+    Dt   $>$  5   &&&& & 1200 &  575\\
+    Dt   $>$  6   &&&& & 1284 &  491\\
+    Pattern analysis & & 220 && {\bf 364} & 36 &  {\bf 455}\\
+    \hline
+    \hline
+    %%EAS & & 220 && {\bf 364} &&  {\bf 455}\\
+    EAS         & \multicolumn{2}{|c||}{220} & \multicolumn{2}{|c||}{364} & \multicolumn{2}{|c|}{455}\\
+    \hline
+    \end{tabular}
+\end{table*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Calibration frames have not special tags and are separated by the large signal sum and the large pulse duration. The detector was configured to make calibration frame after every trigger event frame. But sometimes during experiment the counting rate of the detector exceeded reception capacity of the detector buffer and it caused the buffer overflow and a failure in its operation so the calibration frame was not recorded. Therefore not exact half of recorded events are calibration ones.
+From all 3813 frames recorded in 2013 run near the half of them (1901) was calibration ones. 
+
+The failure of the buffer is seen also as a trigger bit location outside of [220, 300] time interval in the dataframe. So frames with trigger time bin less than 220 and more than 300 time bin was deleted from further consideration. There was 130 frames with this trigger failure.
+
+From the further consideration was rejected frames with small time duration like event 11308 on the Fig.~\ref{fig:frames}c. Due to the experiment geometry the signal from the Cherenkov light cannot has duration less than 6~time bins or 75~ns. This condition cuts 1200 (or 1284) frames. 
+The rest number of event was equal to 491 (or 575 in case of criteria Dt $>$ 5). But not all this events was EAS-caused ones. To separate EAS-caused frames the search for the Cherenkov light flashes were performed with special pattern analysis procedure. % and some methods of ML were used. 
+
+
+%\subsection{Search for the Cherenkov light flashes with pattern analysis procedure}
+
+%The \mbox{SPHERE-2} detector features quasi-continuous field of view and viewing fields of neighboring PMTs partially overlapped. This means that the light signal from physical shower cannot end in one channel before it will begin in a neighboring channel. Thus the 3D structure of the shower can be reconstructed using the channel data records and taking time as the Z-axis and the PMTs positions as XY-coordinates. The physical shower light in such data representation will look like an inclined disk.
+
+%For the shower search procedure the data in each channel of the `event' frame was filtered from the noise values since the procedure is sensitive to the noise. Data in each channel was smoothed using values from 2 previous time bins (with weights 1/4 and 1/16) and 2 consecutive time bins (same weights) of this channel and data of the same time bin from all 6 neighboring PMTs' channels (with weight 1/6). This procedure removes random noise from the data. After that everything with low amplitude was removed from the data. E.g. in the smoothed record of each data channel all values lower than $1.5\sigma_i$ were replaced with zeroes. After that another pass of the filter removed the isolated data bins, the ones that were shorter than 2 consecutive bins since the physical signal cannot be shorter than this because of the geometrical effects, large field of view of each PMT and Cherenkov pulse shape. 
+
+%Next step was data binarization --- each zero value remained zero, every non-zero value was replaced with 1. In this binary array using simple wave algorithm the largest isolated compact spot was identified and stored as a ``candidate'' spot. If the number of PMT's that this ``candidate'' spot saturated was larger than 7, then the ``candidate'' spot was checked that it had correct geometry (positive curvature and no secondary large pulses in any PMT) and promoted to the `EAS event' status.
+
+
+\begin{figure}[t]
+    \includegraphics[width=19pc]{figs/time_on_altitude.pdf}%
+    \caption{The altitude distribution of experiment time.}
+    \label{fig:time_on_altitude}
+%\end{figure}
+\vspace{2pc}
+%\begin{figure}[t]
+    \includegraphics[width=19pc]{figs/height_eas.pdf}
+    \caption{The altitude distribution of detected EAS events.}
+    \label{fig:height_eas}
+\end{figure}
+
+
+The altitude distribution of detected events classified as EAS is shown on the Fig.~\ref{fig:height_eas}. The main statistics of 2013 year was collected at altitude near 600~m above ice level. The numbers of triggers classified as EAS events is presented in the Table~\ref{tab:rejection}.
+
+
+
+
+\subsection{Pulse noise}
+\label{sect:noiseremoval}
+
+{\Russian
+
+В русле дальнейшего сравнения моделирования для СФЕРЫ с экспериментальными данными был проверен шум импульсный, наблюдающийся невооружённым глазом в отдельных каналах.
+
+Первое, были вычислены коэффициенты корреляции между отдельными каналами. Брались данные 2013 года, все события от ШАЛ и линии, а также их калибровочные кадры. Данные проверялись на синхронность всех каналов (случаются выбросы). В кадрах с отступом в 10 бин от края кадра брались 300 бин до триггера и 300 бин до синхроимпульса в событиях и в линиях, и только первые 300 бин в калибровочных кадрах. Полученные коэффициенты корреляции приведены на рисунке channel correlation. Видно, что ряд каналов неплохо коррелируют друг на друга, т.е. имеют некий общий вклад поверх независимого шума от светового фона.
+
+На тех же данных были получены ковариации каналов. В предположении, что в каждом канале поверх независимого оптического фона накладывается с какой-то амплитудой общий для всех каналов шум аппаратуры были оценены вклады этого общего аппаратного шума в каждый канал (как величина равная сумме всех коэффициентов ковариации данного канала со всем остальными каналам, нормированная на самую большую такую сумму). Оценка не является точной, но это поправимо. Полученные коэффициенты см в файле channel correlations.txt.
+
+Т.к. предполагалось, что "коррелированный" шум носит импульсный нерегулярный характер, то в каждом событии была выделена скоррелированная шумовая составляющая как сумма всех каналов с учётом полученных чуть выше коэффициентов. Т.к. в каждом временном бине суммировались данные с весами, равными ожидаемому вкладу шума в этот канал. Случайный шум от оптического фона должен давать 0, как сумма 109 независимых случайных величин с мат.ожиданием 0. А вот общий для всех шум, одинаковый во всех каналах, должен сложиться и стать заметным.
+Эта процедура была проделана со всеми теми же данными (см. Noise.jpg). Если развернуть поближе (Noise  closeup.jpg), то видно, что шум действительно импульсный и имеет некую повторяющую структуру из выброса вверх (светлая полоса), за ним выброса вниз (тёмная полоса), затем небольшое плато, выброс вниз, затем выброс вверх. чтобы выяснить, так ли это и является ли это общей закономерностью всегда, развёртки отдельных событий были выровнены по шумовым импульсам (Nsync.jpg). Шум в итоге регулярный, имеет постоянную амплитуду во всех событиях (т.е. это наводка на аппаратуре, не на ФЭУ, т.к. тут не применены коэффициенты калибровки).
+Сумму всех событий с учётом синхронизации шумовых импульсов см. на noise full length (или выделенный повторяющийся сегмент на noise segment). Шаг повторений 252 бина, что соответствует частоте 317460-317800 Гц (но это уже не ко мне, что там так шумит). В остатке имеем, что во всех кадрах присутствует вот такая наводка on the Fig.~\ref{fig:pulse_noise_segment}  c шагом повторений 252 бина по времени.
+
+}
+
+%% noise segment
+\begin{figure}[tb]
+\includegraphics[width=0.48\textwidth]{figs/pulse_noise_segment.pdf}
+\caption{Pulse noise segment}
+\label{fig:pulse_noise_segment}
+\end{figure}
+
+
+\section{Conclusions \label{sect:conclusions}}
+
+{
+\Russian
+
+В статье мы описали как в эксперименте мы измеряем параметры установки  СФЕРА-2, важные для восстановления черенковских событий.  В частности, высота установки над уровнем земли измеряется двумя способами, что позволяет определить истинное значение высоты. Мы видим, что установка стабильна в воздушном потоке.} 
+In the paper we demonstrated how the monitoring of the SPHERE-2 parameters works. 
+
+{
+\Russian
+Зарегистрированный установкой сигнал очищается от аппаратных эффектов. Мы выявили и учли импульсный шум аппаратуры каналов, влияние звездного фона. 
+
+Зарегистрированные события подверглись классификации. Из них выделены события от черенковского света ШАЛ. }The EAS event selection procedure is described.
+
+{
+\Russian
+Процедура восстановления параметров ШАЛ будет описана в последующих публикациях.
+}
+
+
+\bibliography{Sphere-Data.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   Appendix %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+
+
+\section{Data preprocessing\label{sect:preprocessing}}
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{0.5\textwidth}
+\includegraphics[width=19pc]{figs/pied_PMT1.eps}
+\vspace{-1.0pc}
+\caption{The PMT baseline for central PMT.}
+\label{fig:pied}
+\end{minipage}
+\vfill
+\vspace{1pc}
+\begin{minipage}[t]{0.5\textwidth}
+\includegraphics[width=19pc]{figs/piedfluct_PMT1.eps}
+\vspace{-1.0pc}
+\caption{The PMT baseline fluctuations for central PMT.}
+\label{fig:piedfluct}
+\end{minipage}
+\end{figure}
+
+
+%\begin{figure}[bht]
+%\centering
+%\includegraphics[width=0.40\textwidth]{figs/time_correction_quality_noise_low}
+%\caption{The histogram of modeled differences between true and reconstructed synchronization pulse positions.}
+%\label{fig:synchro}
+%\end{figure} 
+
+
+\subsection{Baseline handling}
+
+The \mbox{SPHERE-2} DAQ system had two data channels per one PMT working with half phase shift effectively doubling sampling frequency. Due to some technical reasons (see detailed description of \mbox{SPHERE-2} electronics in \cite{Ant15a}) in the DAQ system the current was added to the PMT output before it got to the FADC. This additional baseline current, individual in each channel, resulted in on average about 40--60 additional `code' units (arbitrary unit on the FADC output, see~\cite{Ant16} for details) and not necessarily integer in those units. The exact value of added current was unknown and changed slowly over time with the change of temperature and conditions within the control block (this was observed on-site during days temperature change). The changes of the baseline current were small and slow enough to consider the baseline constant during each recorded frame (during the flight the current changed on about 1--2 units per 4 hours). 
+
+During data preprocessing the baselines in each channel were estimated as an average value from the first 400 time bins recorded, see for example Fig.~\ref{fig:pied}. The better estimation could be achieved by fitting the distribution of all values recorded in the frame (thus rendering procedure less sensitive to extreme fluctuations or random particle signals) with Gaussian distribution function. However during the later signal reconstruction procedure small baseline uncertainties were automatically accounted for, thus simpler and faster procedure was used. After a baseline in a channel was estimated its value was subtracted from signals in this channel to have a near-zero signal baseline further. figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum} show events signals with 
+subtracted baselines.
+
+Along with average value for each channel the standard deviations of signals in each channel $\sigma_i$ were estimated and found to be from 0.5 to 2.5 arb.~unit, see  Fig.~\ref{fig:piedfluct}. The fluctuation of the baseline in each data channel came from constant starlight background that was present during the measurements. With the clear moonless night sky starlight background is (1--2)$\cdot10^{12}$~photon~sr$^{-1}$~s$^{-1}$~m$^{-2}$~\cite{starlightbackground}. Thus for 12.5~ns about 50--70 photons from starlight background should had been falling on each PMT on average producing about 4--7 photoelectrons, which translates in 3--5 arb. units. The characteristic amplitude of these fluctuations were individual for each channel and came from differences in amplification and quantum efficiency of each PMT. More sensitive PMTs showed higher fluctuations. The estimated fluctuations are consistent with the expected ones. The electronics and PMTs themselves produced very low noise (less than 1 arb. unit) as was checked in dark room in the laboratory and on-site. The average fluctuation values later were used as thresholds during EAS events identification to filter-out noise. 
+
+%\subsection{Channel synchronization}
+
+%\begin{figure}[t]
+%\center
+%\includegraphics[width=0.35\textwidth]{figs/time_correction_quality_noise_low.eps}
+%\caption{The histogram of modeled differences between true and reconstructed synchronization pulse positions.}
+%\label{fig:synchro}
+%\end{figure} 
+
+
+%Each data recording channel has independent FADC and independent buffer to store data. All FADCs has equal parameters and sampling frequency. So in ideal conditions that would've sufficed to have all channels synchronized via the trigger signal. In real design a flaw was found that sometimes caused the high amplitude signal from PMT to induce the fake `stop-go' signal in buffer control lines thus creating a time drift between channels. In order detect, estimate and compensate this drift the calibration system produced a short all-LED synchronization pulse in 5.8~$\mu$s after the trigger signal. This pulse appeared in the end of the `event' frame and is clearly seen on the Fig.~\ref{fig:frames} at time near bin 900. The calibration LEDs illuminated the PMT mosaic via equal-length optical fibers that were located near the PMT mosaic. Hence the light pulse falling on the mosaic was physically synchronous in every PMT. 
+
+%This pulse with approximate duration of 100~ns was strong (about 400 arb.\ code units) and was easily detectable in each data channel. The center-of-mass approach was uses to find the exact position of the synchronization pulse. The Monte Carlo simulation of synchronization pulse digitalization and automatic center-of-mass estimation was done to determine the procedures precision. 
+%On the Fig.~\ref{fig:synchro} the results of this simulation are shown. 
+%The $\Delta{}t$ is the difference between the random initial synchronization pulse position and the reconstructed one. In the best case scenario (high sensitivity PMT) the precision of the pulse location is better that 0.05~time bin, e.g. better than 0.5~ns. In worst case it's more like 2--3~ns. On average the channels synchronization precision was about 1~ns.
+
+%In order to simplify `event' frames classification later all channels were shifted (time drift values were rounded to the nearest integer for this purpose) so that the synchronization pulse appeared at predefined time bin. Empty bins at the beginning or the end of the data channel record were padded with zeros. The exact values of time drift after correction (each less than 1 time bin) were stored for later use during shower arrival direction estimation. 
+
+%The `calibration' frame (Fig.~\ref{fig:frames}b) paired to each `event' frame did not contain the synchronization pulse. As the `calibration' frame was not used for any kind of time measurements the exact position of calibration pattern in each channel was irrelevant. But for simplification of further procedures all the channel were shifted to put the edge of first all-LED pulse to the predefined time bin.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{figure*}[bt]
+%    \centering
+%    \includegraphics[width=0.48\textwidth]{figs/2013_r_div_H.eps}%
+%    \caption{The distance of axis from the center of detector FOV. }
+%    \label{fig:r_div_H}
+%\end{figure*}
+%\begin{figure*}[bt]
+% \hfill
+%    \begin{minipage}[t]{0.47\textwidth}
+%    \centering
+%    \includegraphics[width=19pc]{figs/theta.eps}%
+%    %\vspace{-1.0pc}
+%    \caption{The zenith angle $\theta$ distribution of detected EAS events in 2013.}
+%    \label{fig:theta_eas}
+%    \end{minipage}
+%\end{figure*}
+
+% в приложения и на всю страницу, дописать параметры события
+\begin{figure*}[pt]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figs/mosaic_11588_lin.eps}%
+    \caption{The signals of the PMT mosaic with time step 12.5~ns for the EAS classified event with number 11588 the same as on Fig.~\ref{fig:frames}a, Fig.~\ref{fig:pulses}a, Fig.~\ref{fig:mosaic_sum}a. Zenith angle of the EAS initial particle is estimated as $\theta = 23^{\circ}$. Altitude of the detector $H$ = 702~m above snow level.
+    }
+    \label{fig:mosaic_eas}
+\end{figure*}
+
+\begin{figure*}[pt]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/mosaic_11588_log1.pdf}%
+    \caption{The signals of the PMT mosaic with time step 12.5~ns for the EAS classified event with number 11588 the same as on Fig.~\ref{fig:frames}a, Fig.~\ref{fig:pulses}a, Fig.~\ref{fig:mosaic_sum}a. Zenith angle of the EAS initial particle is estimated as $\theta = 23^{\circ}$. Altitude of the detector $H$ = 702~m above snow level.
+    }
+    \label{fig:mosaic_eas2}
+\end{figure*}
 
 \end{document}

@@ -42,7 +42,7 @@
 \linenumbers
 
 \begin{frontmatter}
-\title{Data acquisition and events selection in the SPHERE-2 experiment}
+\title{EAS observation from the air in the SPHERE-2 experiment. \\ Part 2. Data acquisition and events selection.}
 
 \author[address1]{E.A.~Bonvech\corref{correspondingauthor1}}
 \cortext[correspondingauthor1]{Corresponding author}
@@ -100,6 +100,16 @@ The \mbox{SPHERE-2} detector optics consists of a 1.5~m diameter spherical mirro
     \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated.}
 \label{fig:mosaic}
 \end{figure}
+
+%%%% === mosaic picture ===
+\begin{figure}[tb]
+\centering
+    \includegraphics[width=19pc]{figs/Mosaic_sine.png}%
+    \vspace{-1.0pc}
+    \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated, and view of relative time arriving EAS light on PMTs, where Npmt- number of each PMT in mosaic,t – relative time (bin = 12.5 nS).}
+\label{fig:mosaic_sine}
+\end{figure}
+
 
 The PMT mosaic is located near the mirror focal surface and records the Cherenkov light reflected from the snow surface below the detector. PMTs are arranged in the hexagonal structure on the spherical surface as shown on Fig.~\ref{fig:mosaic}. 
 
@@ -340,7 +350,7 @@ All the data frames are pre-processed, including baselines estimation and substr
     Criteria & Reject & Result & Reject & Result & Reject & Result\\ 
     %         & by the criteria & after criteria\\ 
     \hline 
-    Calibration   &&&& & 1901 & 1912\\
+    Calibration   & 0 & 20571 & 3489 & 4227 & 1901 & 1912\\
     Trig $>$ 220  &&&& &  125 & 1787\\
     Trig $<$ 300  &&&& &    5 & 1782\\
     Dt   $<$ 200  &&&& &    7 & 1775\\
@@ -412,6 +422,8 @@ In the paper we demonstrated how the monitoring of the SPHERE-2 parameters works
 Процедура восстановления параметров ШАЛ будет описана в последующих публикациях.
 }
 
+\section{Acknowledgements}
+\todoi{Не забыть Шаулова, Домогацкого и кто там ещё}
 
 \bibliography{Sphere-Data.bib}
 

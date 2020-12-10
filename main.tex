@@ -8,17 +8,15 @@
 
 \usepackage[utf8]{inputenc} % Включаем поддержку UTF8
 \usepackage[T2A]{fontenc}
-\usepackage[russian,english]{babel}   % убрать русский перед отправкой статьи
-
+\usepackage[english,russian]{babel}   % убрать русский перед отправкой статьи
 \usepackage{lineno}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[pdftex, backref, colorlinks]{hyperref}
 \usepackage{multirow}
+\usepackage{enumitem}
 
 \modulolinenumbers[5]
-%\journal{Journal of \LaTeX\ Templates}
-%\journal{Journal}
 \journal{Astroparticle Physics}
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -30,16 +28,16 @@
 %\hyphenpenalty=10000
 
 %\setlength{\marginparwidth}{2cm}
-%\usepackage{todonotes}
+\usepackage{todonotes}
+
 %http://ctan.math.washington.edu/tex-archive/macros/latex/contrib/easy-todo/easy-todo.pdf
 %\usepackage[enable]{easy-todo}
-\usepackage{todonotes}
 
 \begin{document}
 \newcommand{\todoi}[1]{\todo[inline]{\Russian #1}}
 
 \tableofcontents  % пусть пока побудет, стереть перед подачей
-\listoftodos
+\listoftodos[Notes]
 \linenumbers
 
 \begin{frontmatter}
@@ -62,7 +60,7 @@
 \address[address4]{M.V. Lomonosov Moscow State University, Department of Physics, Moscow, Russia}
 
 \begin{abstract}
-The SPHERE-2 detector designed for the extensive air showers registration performed measurements in 2008--2013. The data the detector collected is still under analysis but here we present the analysis of the telemetry data and of the detector operation conditions including background lighting, temperature conditions and its effects, atmosphere studies.
+The SPHERE-2 detector designed for the extensive air showers registration performed measurements in 2008--2013. The data the detector collected is still under analysis but here we present the data flow recording procedures and event selection technique.
 \todoi{Переписать.}
 \end{abstract}
 
@@ -88,6 +86,10 @@ Since the Cherenkov light from EAS has a very sharp directional pattern it can n
 The compact detector that observes large surface area, however, can combine some strong sides of an IACT with high upper energy threshold. 
 
 The general overview of the SPHERE-2 experiment can be found in~\cite{Ant15a}, and the detailed description of the detector electronics is given in~\cite{Ant20}.
+{
+\Russian
+Эта статья является продолжением серии итоговых статей по эксперименту с установкой СФЕРА-2, начатой статьей~\cite{SPHERE21}.
+}
 
 
 \section{The SPHERE-2 detector \label{sect:detector}}
@@ -100,13 +102,13 @@ The \mbox{SPHERE-2} detector is a compact optical device to measure the EAS Cher
 The \mbox{SPHERE-2} detector optics consists of a 1.5~m diameter spherical mirror with a 109 photomultiplier tube (PMT) mosaic. 
 
 %%%% === mosaic picture ===
-\begin{figure}[tb]
-\centering
-    \includegraphics[width=19pc]{figs/mosaic.pdf}%
-    \vspace{-1.0pc}
-    \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated.}
-\label{fig:mosaic}
-\end{figure}
+%\begin{figure}[tb]
+%\centering
+%    \includegraphics[width=19pc]{figs/mosaic.pdf}%
+%    \vspace{-1.0pc}
+%    \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated.}
+%\label{fig:mosaic}
+%\end{figure}
 
 %%%% === mosaic picture ===
 \begin{figure}[tb]
@@ -118,7 +120,7 @@ The \mbox{SPHERE-2} detector optics consists of a 1.5~m diameter spherical mirro
 \end{figure}
 
 
-The PMT mosaic is located near the mirror focal surface and records the Cherenkov light reflected from the snow surface below the detector. PMTs are arranged in the hexagonal structure on the spherical surface as shown on Fig.~\ref{fig:mosaic}. 
+The PMT mosaic is located near the mirror focal surface and records the Cherenkov light reflected from the snow surface below the detector. PMTs are arranged in the hexagonal structure on the spherical surface as shown on Fig.~\ref{fig:mosaic_sine}. 
 
 
 \section{Signal data flow handling}
@@ -169,47 +171,20 @@ The telemetry data written to binary file is: event number, local computer time,
 One `event' frame information takes 220~kBytes. All the data is saved to a binary file on the detector on-board computer SSD drive. From primary binary files the work frames files were created during data preprocessing. Preprocessing included baselines estimation and substraction, time drift detection and correction, for detail see~\ref{sect:preprocessing}.
 
 
-\begin{table}[b]
-\centering
-\caption{The annual statistics of the SPHERE experiment on Baikal Lake\todoi{Уточнить статистику по 2008-2009 годам.}}
-\label{tab:statistics}
-\vspace{1pc}
-\begin{tabular}{|c||c|r|c|r|r|}
-\hline
-run  & flights & PMT    & time, & triggers \\ 
-year &         & number & hours & detected \\ 
-\hline \hline
-\multicolumn{5}{|c|}{test runs} \\
-\hline
-2008 & 1 &  20 & 1.5 &    1 \\ 
-2009 & 5 &  64 & 11 &     1 \\ 
-2010 & 6 &  96 & 30 &  1343 \\
-\hline
-\multicolumn{5}{|c|}{experiment runs} \\
-\hline
-2011 & 4 &  96 & 30 & 20571 \\
-2012 & 5 & 109 & 31 &  7716 \\
-2013 & 5 & 109 & 33 &  3813 \\
-\hline
-\end{tabular}
-\end{table}
-
-
-
 \section{Data preprocessing\label{sect:preprocessing}}
 
 \begin{figure}[t]
 \centering
-\begin{minipage}[t]{0.5\textwidth}
-\includegraphics[width=19pc]{figs/pied_PMT1.eps}
+\begin{minipage}[t]{0.48\textwidth}
+\includegraphics[width=18pc]{figs/pied_PMT1.eps}
 \vspace{-1.0pc}
 \caption{The PMT baseline for central PMT.}
 \label{fig:pied}
 \end{minipage}
 \vfill
 \vspace{1pc}
-\begin{minipage}[t]{0.5\textwidth}
-\includegraphics[width=19pc]{figs/piedfluct_PMT1.eps}
+\begin{minipage}[t]{0.48\textwidth}
+\includegraphics[width=18pc]{figs/piedfluct_PMT1.eps}
 \vspace{-1.0pc}
 \caption{The PMT baseline fluctuations for central PMT.}
 \label{fig:piedfluct}
@@ -289,7 +264,7 @@ The all the absolute calibration data and procedure was rechecked. Small was cor
 The SPHERE-2 detector registered more than 30 thousands trigger event frames but not all of them was caused by signals of the EAS Cherenkov light. 
 Examples of `event' frames detected by the SPHERE-2 detector are presented on the figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum}. They are of different types of  dataframes. 
 
-The Fig.~\ref{fig:frames} present events as a full map of signal intensities in all PMT channels during the frame time. The x-axis on the Fig.~\ref{fig:frames} is the detector PMT number $N$ according to Fig.~\ref{fig:mosaic} and the y-axis is the 12.5~ns time bin number $T$. The color intensity of every point on the Fig.~\ref{fig:frames} is proportional to the logarithm of the signal of the  photomultiplier $N$ in the time bin $T$. Few measuring channels sometimes failed or worked incorrectly. The data of such channels were not processed and are visible in the figures as zeros.
+The Fig.~\ref{fig:frames} present events as a full map of signal intensities in all PMT channels during the frame time. The x-axis on the Fig.~\ref{fig:frames} is the detector PMT number $N$ according to Fig.~\ref{fig:mosaic_sine} and the y-axis is the 12.5~ns time bin number $T$. The color intensity of every point on the Fig.~\ref{fig:frames} is proportional to the logarithm of the signal of the  photomultiplier $N$ in the time bin $T$. Few measuring channels sometimes failed or worked incorrectly. The data of such channels were not processed and are visible in the figures as zeros.
 
 Fig.~\ref{fig:pulses} shows signal pulses in channels with the largest signal magnitudes in the event frame. And the Fig.~\ref{fig:mosaic_sum} demonstrates an integral signal for every optic channel. The integration was made as a sum of signals in time limits indicated on the Fig.~\ref{fig:pulses} for every frame respectively. 
 
@@ -315,7 +290,7 @@ Fig.~\ref{fig:pulses} shows signal pulses in channels with the largest signal ma
 \vspace{1.0pc}
     \includegraphics[width=0.85\textwidth]{figs/mosaic_sums_lin.pdf}%
     \vspace{-1.0pc}
-    \caption{The sum signal for the events on Fig.~\ref{fig:frames} integrated in time limits indicated on the Fig.~\ref{fig:pulses} x-axis. PMTs are arranged according to the scheme on the Fig.~\ref{fig:mosaic}. Color intensity of points is proportional to the logarithm of the PMT signal sum.}
+    \caption{The sum signal for the events on Fig.~\ref{fig:frames} integrated in time limits indicated on the Fig.~\ref{fig:pulses} x-axis. PMTs are arranged according to the scheme on the Fig.~\ref{fig:mosaic_sine}. Color intensity of points is proportional to the logarithm of the PMT signal sum.}
 \label{fig:mosaic_sum}
 \end{figure*}
 
@@ -393,12 +368,6 @@ The rest number of event was equal to 491 (or 575 in case of criteria Dt $>$ 5).
 
 
 \begin{figure}[t]
-    \includegraphics[width=19pc]{figs/time_on_altitude.pdf}%
-    \caption{The altitude distribution of experiment time.}
-    \label{fig:time_on_altitude}
-%\end{figure}
-\vspace{2pc}
-%\begin{figure}[t]
     \includegraphics[width=19pc]{figs/height_eas.pdf}
     \caption{The altitude distribution of detected EAS events.}
     \label{fig:height_eas}
@@ -406,8 +375,6 @@ The rest number of event was equal to 491 (or 575 in case of criteria Dt $>$ 5).
 
 
 The altitude distribution of detected events classified as EAS is shown on the Fig.~\ref{fig:height_eas}. The main statistics of 2013 year was collected at altitude near 600~m above ice level. The numbers of triggers classified as EAS events is presented in the Table~\ref{tab:rejection}.
-
-
 
 
 \section{Conclusions \label{sect:conclusions}}

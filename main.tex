@@ -8,7 +8,7 @@
 
 \usepackage[utf8]{inputenc} % Включаем поддержку UTF8
 \usepackage[T2A]{fontenc}
-\usepackage[english,russian]{babel}   % убрать русский перед отправкой статьи
+\usepackage[russian,english]{babel}   % убрать русский перед отправкой статьи % влияет на язык подписей к рисункам и таблицам
 \usepackage{lineno}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -30,8 +30,6 @@
 %\setlength{\marginparwidth}{2cm}
 \usepackage{todonotes}
 
-%http://ctan.math.washington.edu/tex-archive/macros/latex/contrib/easy-todo/easy-todo.pdf
-%\usepackage[enable]{easy-todo}
 
 \begin{document}
 \newcommand{\todoi}[1]{\todo[inline]{\Russian #1}}
@@ -41,7 +39,8 @@
 \linenumbers
 
 \begin{frontmatter}
-\title{EAS observation from the air in the SPHERE-2 experiment. \\ Part 2. Data acquisition and event selection.}
+\title{SPHERE-2 balloon experiment results.\\ Part II. Data acquisition and event selection.}
+%\title{EAS observation from the air in the SPHERE-2 experiment. \\ Part 2. Data acquisition and event selection.}
 
 \author[address1]{E.A.~Bonvech\corref{correspondingauthor1}}
 \cortext[correspondingauthor1]{Corresponding author}
@@ -81,7 +80,7 @@ Common EAS ground-based arrays such as the Telescope Array~\cite{abu12}, Yakutsk
 
 On the other hand common imaging air Cherenkov telescopes (IACT, like HESS~\cite{} or MAGIC~\cite{}) are relatively compact systems that have good calibration means, high integrity power supply, atmosphere transparency control and so on.
 
-Since the Cherenkov light from EAS has a very sharp directional pattern it can not be observed by detectors more than about 0.5--1~km far from the shower axis. Therefore the IACTs have relatively low upper energy threshold.
+Since the Cherenkov light from EAS has a very sharp directional pattern it can not be observed by detectors more than about 0.5--1.0~km far from the shower axis. Therefore the IACTs have relatively low upper energy threshold.
 
 The compact detector that observes large surface area, however, can combine some strong sides of an IACT with high upper energy threshold. 
 
@@ -115,7 +114,7 @@ The \mbox{SPHERE-2} detector optics consists of a 1.5~m diameter spherical mirro
 \centering
     \includegraphics[width=19pc]{figs/Mosaic_sine.png}%
     \vspace{-1.0pc}
-    \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated, and view of relative time arriving EAS light on PMTs, where Npmt- number of each PMT in mosaic,t – relative time (bin = 12.5 nS).}
+    \caption{The PMT mosaic of the SPHERE-2 detector with PMTs numbers indicated, and view of relative time arriving EAS light on PMTs, where Npmt- number of each PMT in mosaic,t – relative time (bin = 12.5 nS).\todoi{Сделать новую картинку схемы мозаики с серой развёрткой и указанием колец цветом или стрелками.}}
 \label{fig:mosaic_sine}
 \end{figure}
 
@@ -159,6 +158,10 @@ The trigger system (TS) of the SPHERE-2 detector produces an `event' signal when
 \label{fig:get_event_algorithm}
 \end{figure}
 % На схеме видна возможная причина большого количества плохих кадров. Если в буфере есть несколько событий и при чтении первого события произошла ошибка чтения FIFO, то следующие события все равно читаются и сохраняются, хотя было бы лучше их выбрасывать, сразу очищая буфер.
+
+\subsection{Threshold autoset}
+
+\todoi{Схема выставления порогов и ее описание}
 
 \subsection{Data acquisition} 
 
@@ -207,7 +210,7 @@ The \mbox{SPHERE-2} DAQ system had two data channels per one PMT working with ha
 During data preprocessing the baselines in each channel were estimated as an average value from the first 400 time bins recorded, see for example Fig.~\ref{fig:pied}. The better estimation could be achieved by fitting the distribution of all values recorded in the frame (thus rendering procedure less sensitive to extreme fluctuations or random particle signals) with Gaussian distribution function. However during the later signal reconstruction procedure small baseline uncertainties were automatically accounted for, thus simpler and faster procedure was used. After a baseline in a channel was estimated its value was subtracted from signals in this channel to have a near-zero signal baseline further. figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum} show events signals with 
 subtracted baselines.
 
-Along with average value for each channel the standard deviations of signals in each channel $\sigma_i$ were estimated and found to be from 0.5 to 2.5 arb.~unit, see  Fig.~\ref{fig:piedfluct}. The fluctuation of the baseline in each data channel came from constant starlight background that was present during the measurements. With the clear moonless night sky starlight background is (1--2)$\cdot10^{12}$~photon~sr$^{-1}$~s$^{-1}$~m$^{-2}$~\cite{starlightbackground}. Thus for 12.5~ns about 50--70 photons from starlight background should had been falling on each PMT on average producing about 4--7 photoelectrons, which translates in 3--5 arb. units. The characteristic amplitude of these fluctuations were individual for each channel and came from differences in amplification and quantum efficiency of each PMT. More sensitive PMTs showed higher fluctuations. The estimated fluctuations are consistent with the expected ones. The electronics and PMTs themselves produced very low noise (less than 1 arb. unit) as was checked in dark room in the laboratory and on-site. The average fluctuation values later were used as thresholds during EAS events identification to filter-out noise. 
+Along with average value for each channel the standard deviations of signals in each channel $\sigma_i$ were estimated and found to be from 0.5 to 2.5 arb.~unit, see  Fig.~\ref{fig:piedfluct}. The fluctuation of the baseline in each data channel came from constant starlight background that was present during the measurements. With the clear moonless night sky starlight background is (1--2)$\cdot10^{12}$~photon~sr$^{-1}$~s$^{-1}$~m$^{-2}$~\cite{starlightbackground} \todoi{Переписать! в соотвественнии с предыдущей статьёй.}. Thus for 12.5~ns about 50--70 photons from starlight background should had been falling on each PMT on average producing about 4--7 photoelectrons, which translates in 3--5 arb. units. The characteristic amplitude of these fluctuations were individual for each channel and came from differences in amplification and quantum efficiency of each PMT. More sensitive PMTs showed higher fluctuations. The estimated fluctuations are consistent with the expected ones. The electronics and PMTs themselves produced very low noise (less than 1 arb. unit) as was checked in dark room in the laboratory and on-site. The average fluctuation values later were used as thresholds during EAS events identification to filter-out noise. 
 
 
 \subsection{Pulse noise}
@@ -259,7 +262,7 @@ The all the absolute calibration data and procedure was rechecked. Small was cor
 
 %\section{Event selection\label{sect:classification}}
 
-\subsection{Trigger data}
+\subsection{Frame data}
 
 The SPHERE-2 detector registered more than 30 thousands trigger event frames but not all of them was caused by signals of the EAS Cherenkov light. 
 Examples of `event' frames detected by the SPHERE-2 detector are presented on the figs.~\ref{fig:frames}, \ref{fig:pulses} and \ref{fig:mosaic_sum}. They are of different types of  dataframes. 
@@ -295,7 +298,7 @@ Fig.~\ref{fig:pulses} shows signal pulses in channels with the largest signal ma
 \end{figure*}
 
 
-\subsection{Trigger event zoo}
+\subsection{Frame event zoo}
 
 The `event' frame 11588 on the Fig.~\ref{fig:frames}a, \ref{fig:pulses}a and \ref{fig:mosaic_sum}a is an EAS-caused event, it is an image of reflected from the snow surface EAS Cherenkov light. The event structure is typical for Cherenkov light frames as it was described in our paper dedicated to simulation of the SPHERE-2 detector experiment~\cite{Ant19}. The event was detected from altitude 702~m above show surface. The inclination of the detector was $1.5^{\circ}$
 
@@ -310,7 +313,7 @@ Events like 11452 on Fig.~\ref{fig:frames}d, \ref{fig:pulses}d and \ref{fig:mosa
 A mysterious event type like 12114 is presented on Fig.~\ref{fig:frames}e, \ref{fig:pulses}e and \ref{fig:mosaic_sum}e. The event frame has long pulses in numerous channels. The duration of pulses is more than 6 ${\mu}s$ and exceed the frame time capacity.  This `event' may be triggered by crosstalks of PMTs. Or by some long-time events on the surface or in the atmosphere above the detector. The authors favorite version is that these events are caused by light flashes from the electrical discharges accompanying the Baikal lake ice cracking.
 
 
-\subsection{Rejection}
+\subsection{EAS event selection}
 
 All the data frames are pre-processed, including baselines estimation and substraction, time drift detection and correction as described in~\ref{sect:preprocessing} and the PMT calibration~\cite{Ant16}. Then the  selection of the data frames caused by reflected EAS Cherenkov light from all the data amount is performed. Firstly the evident non-EAS events are rejected. In the second stage the special pattern analysis procedure is used to find in event frames Cherenkov light signals. The Table~\ref{tab:rejection} shows event number after every step of the rejection. 
 
@@ -397,7 +400,7 @@ In the paper we demonstrated how the monitoring of the SPHERE-2 parameters works
 }
 
 \section{Acknowledgements}
-\todoi{Не забыть Шаулова, Домогацкого и кто там ещё}
+We are grateful to group of S.B. Shaulov from the Lebedev Physical Institute of the Russian Academy of Sciences for their assistance in assembling and testing of the electronic equipment and preparation of the expeditions. We also thank the Baikal-GVD collaboration and G.V. Domogatsky (Institute for Nuclear Research, Russian Academy of Sciences) for the support of the SPHERE experiment at the Baikal Lake scientific station.
 
 \bibliography{Sphere-Data.bib}
 

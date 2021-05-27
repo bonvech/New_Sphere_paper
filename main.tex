@@ -75,7 +75,7 @@ primary cosmic rays\sep extensive air showers\sep Vavilov--Cherenkov radiation\s
 
 {
 \Russian
-Эта статья является продолжением серии итоговых статей по эксперименту с установкой СФЕРА-2, начатой статьей~\cite{SPHERE21}, в которой описываются условия проведения эксперимента.
+Эта статья является продолжением серии итоговых статей по эксперименту с установкой СФЕРА-2, начатой статьей~\cite{SPHERE21}, в которой описываются условия проведения эксперимента и контроль параметров установки.
 }
 
 %In this paper we describe the data 
@@ -149,6 +149,7 @@ The procedure of the discriminator threshold levels determination is described b
 
 В некоторых измерительных каналах к этому моменту складывается такая ситуация, что уменьшение порога на 1 единицу приводит к уменьшению темпа счета канала ниже минимально допустимого, а увеличение на 1 единицу кода - к увеличению темпа счета выше предельно допустимого. Если оставить этот канал с маленьким порогом, он приведет к "забою" всей установки шумовыми срабатываниями. Поэтому дополнительно проводится еще 10 раз процедура коррекции порога, при которой порог может изменяться только в сторону увеличения.
 
+
 По окончании полной процедуры выставления порогов в каждом измерительном канала установлен пороговый уровень дискриминатора, который обеспечивает темп счета канала не более, чем максимально допустимый. Вся процедура длится менее 3 минут. Значение параметра целевого темпа счета задается программе автоматического управления работой установки через конфигурационный файл параметров. При необходимости, процедура автоматического выставления порогов дискриминатора может быть запущена оператором в любой момент во время работы установки. 
 
 
@@ -157,7 +158,9 @@ The procedure of the discriminator threshold levels determination is described b
 % блок-схема дискриминаторов
 % блок-схема выставления порогов
 % блок-схема триггера
-The trigger system (TS) of the SPHERE-2 detector produces a `record' signal when the trigger condition is satisfied. The trigger condition was: 1~${\mu}$s time window \todoi{ заполнить пропуск в логике} --- so called `local' trigger $LN$ or in any $M$ PMTs over the mosaic --- `global' trigger $GM$. The number of channels to exceed the threshold level was varied from flight to flight to decrease the energy threshold, but the most of the data was obtained under trigger condition `$L3$ $or$ $G5$' then at least one of two trigger conditions have to be satisfied. 
+The trigger system (TS) of the SPHERE-2 detector produces a `record' signal when the trigger condition is satisfied. The trigger condition was: the signal exceeding of the threshold level
+in any $L$ neighbours PMTs
+during 1~${\mu}$s time window  --- so called `local' trigger $LN$ or in any $M$ PMTs over the mosaic --- `global' trigger $GM$. The number of channels to exceed the threshold level was varied from flight to flight to decrease the energy threshold, but the most of the data was obtained under trigger condition `$L3$ $or$ $G5$' then at least one of these two trigger conditions have to be satisfied. 
 
 The posterior analysis shows that some events was recorded under trigger $L2$ although the condition $L3$ was set.
 

@@ -75,7 +75,7 @@ primary cosmic rays\sep extensive air showers\sep Vavilov--Cherenkov radiation\s
 
 {
 \Russian
-Эта статья является продолжением серии итоговых статей по эксперименту с установкой СФЕРА-2, начатой статьей~\cite{SPHERE21}, в которой описываются условия проведения эксперимента и контроль параметров установки.
+Эта статья является продолжением серии итоговых статей по эксперименту с установкой СФЕРА-2, начатой статьей~\cite{SPHERE21}, в которой описывались условия проведения эксперимента и контроль параметров установки.
 }
 
 %In this paper we describe the data 
@@ -179,15 +179,17 @@ The posterior analysis shows that some events was recorded under trigger $L2$ al
 \subsection{Data acquisition} 
 
 % определение frame - 112 х 2 х 510 + telemetry
-When the TS produced a `record' signal the DAQ started recording 12.8~$\mu$s of signal from the delay line including capturing $\sim6~\mu$s of the signal prior to the trigger signal and formed an `event' data in the buffer. One detector `event' data frame contains a 12.8~$\mu$s record of the PMT DAQ signal data from measuring channels with 12.5~ns discretization, in total 1020 10-bit signal values per every of 109~PMT channels. If the signal value exceeded the 10-bit number the 11$^{th}$ bit of the recorded signal value number was set to 1 to indicate the overflowing of the FADC counter and to 0 otherwise. A highest 12$^{th}$ bit of signal value number is set to 1 if the PMT signal exceeds the trigger level. The buffer capacity is enough to keep four `event' frames.
+When the TS produced a `record' signal the DAQ started recording 12.8~$\mu$s of signal from the delay line including capturing $\sim6~\mu$s of the signal prior to the trigger signal and formed an `event' data in the buffer. One detector `event' data frame contains a 12.8~$\mu$s record of the PMT DAQ signal data from measuring channels with 12.5~ns discretization, in total 1020 10-bit signal values per every of 109~PMT channels. If the signal value exceeded the 10-bit number the 11$^{th}$ bit of the recorded signal value number was set to 1 to indicate the overflowing of the FADC counter and to 0 otherwise (by default). The highest 12$^{th}$ bit of signal value number is set to 1 if the PMT signal exceeds the trigger level. 
 
-The main program permanently checks the buffer status and if it is not empty saves data from buffer to a binary data file. The scheme of the buffer data reading procedure is shown on the figure~\ref{fig:get_event_algorithm}. If there are four events in the buffer the trigger is  prohibited and buffer is blocked to write to prevent buffer overflow during reading procedure. If buffer is overflowed then it will be cleared after reading four events. 
+The buffer capacity is enough to keep four `event' frames.
+
+The main program permanently checks the buffer status and if it is not empty saves data from buffer to a binary data file. The scheme of the buffer data reading procedure is shown on the figure~\ref{fig:get_event_algorithm}. If there are four events in the buffer the trigger is prohibited and buffer is blocked to write to prevent buffer overflow during reading procedure. If buffer is overflowed then it will be cleared after reading four events. 
 Every event data is read from buffer and is written to the binary data file. Together with the buffer data the additional information is written to a binary file: the event number, local computer time, two detector inclination angles, GPS coordinates, altitude, UTC time, trigger time, magnetometer angle and the average anode currents for all 109~PMT. 
 
 One `event' information takes 220~kBytes. All the data is saved to a binary file on the detector on-board computer SSD drive. From the primary binary files new text dataframe files were created during offline data preprocessing. Preprocessing includes baseline estimation and substraction, channel time drift detection and correction, noise subtraction and calibration described in the next section. %see~\ref{sect:preprocessing}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Data preprocessing\label{sect:preprocessing}}
+\section{Data  preprocessing \label{sect:preprocessing}}
 
 \begin{figure}[t]
 \centering
